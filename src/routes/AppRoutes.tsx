@@ -15,7 +15,18 @@ const PrivateRoute = ({ children }: { children: JSX.Element }) => {
 export const AppRoutes: React.FC = () => {
     return (
         <Routes>
-            <Route path='/login' element={<Login />} />
+            <Route
+                path='/'
+                element={
+                    <Navigate to={isAuthenticated() ? '/todos' : '/login'} />
+                }
+            />
+            <Route
+                path='/login'
+                element={
+                    isAuthenticated() ? <Navigate to='/todos' /> : <Login />
+                }
+            />
             <Route
                 path='/todos'
                 element={
@@ -24,10 +35,7 @@ export const AppRoutes: React.FC = () => {
                     </PrivateRoute>
                 }
             />
-            {isAuthenticated() && (
-                <Route path='/' element={<Navigate to='/todos' />} />
-            )}
-            <Route path='*' element={<Navigate to='/login' />} />
+            <Route path='*' element={<Navigate to='/' />} />
         </Routes>
     )
 }
