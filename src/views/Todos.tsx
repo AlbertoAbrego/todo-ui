@@ -17,6 +17,11 @@ import { useDeleteCompletedTodos } from '../hooks/useDeleteCompletedTodos'
 export const Todos: React.FC = () => {
     const token: string | null = localStorage.getItem('token')
     const navigate = useNavigate()
+    if (!token) navigate('/login')
+    if (token === 'invalid') {
+        localStorage.removeItem('token')
+        navigate('/login')
+    }
     const [filter, setFilter] = useState<'all' | 'pending' | 'completed'>('all')
     const {
         todos,
@@ -79,8 +84,6 @@ export const Todos: React.FC = () => {
         setTodoTitleToDelete(title)
         setShowConfirm(true)
     }
-
-    if (!token) navigate('/login')
     return (
         <Layout>
             <div className='max-w-3xl mx-auto bg-neutral-800 p-6 rounded shadow content-center'>
